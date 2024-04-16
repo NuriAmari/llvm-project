@@ -29,6 +29,11 @@
   ptr @d
 ], section "llvm.metadata"
 
-!1 = !{ptr @b, i32 0, !{ptr @a}}
-!2 = !{ptr @d, i32 0, !{ptr @c}}
-!llvm.used.conditional = !{!1, !2}
+%clr = type { i64*, i64, i64* }
+@b_clr = private constant %clr { i64* @b, i64 1, i64* @a }, section "__DATA,__llvm_condlive"
+@d_clr = private constant %clr { i64* @d, i64 1, i64* @c }, section "__DATA,__llvm_condlive"
+
+@llvm.compiler.used = appending global [2 x ptr] [
+    ptr @b_clr,
+    ptr @d_clr
+]
